@@ -30,7 +30,7 @@ Steps to use this script:
    c. If you're running the script for the first time, you'll need to enter phone number in international format and the verification code received on Telegram.
 
 5. RESULTS:
-   The script will print out any message from the last two hours in the specified channels that contain any of the keywords. If longer or shorter time needed, please modify.
+   The script will print out any message from the last hour in the specified channels that contain any of the keywords. If longer or shorter time needed, please modify.
 
 NOTE: The search is case-insensitive. For example, searching for 'test1' will also find 'Test1' or 'TEST1'.
 
@@ -61,7 +61,7 @@ def load_channel_ids_from_file(filename):
 
 async def check_messages(client, words, channels):
     utc_now = datetime.now(pytz.utc)
-    two_hours_ago = utc_now - timedelta(hours=1) #modify if needed
+    time_to_check = utc_now - timedelta(hours=1) #modify if needed
 
     with open('telegram_keyword_searcher_results.txt', 'a') as results_file:
         for word in words:
@@ -71,7 +71,7 @@ async def check_messages(client, words, channels):
                     channel_title = channel_details.title if channel_details and hasattr(channel_details, 'title') else str(channel_id)
 
                     async for message in client.iter_messages(channel_id, limit=100):
-                        if message.date > two_hours_ago and message.text and word.lower() in message.text.lower():
+                        if message.date > time_to_check and message.text and word.lower() in message.text.lower():
                             results_file.write(f"Found '{word}' in channel {channel_title} at {message.date}: {message.text}\n")
                 except ChannelPrivateError:
                     logger.warning(f"Can't access channel {channel_id} because it's private or you're not a member.")
