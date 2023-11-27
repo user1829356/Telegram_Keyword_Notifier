@@ -61,7 +61,7 @@ def load_channel_ids_from_file(filename):
 
 async def check_messages(client, words, channels):
     utc_now = datetime.now(pytz.utc)
-    two_hours_ago = utc_now - timedelta(hours=2) #modify if needed
+    two_hours_ago = utc_now - timedelta(hours=1) #modify if needed
 
     with open('telegram_keyword_searcher_results.txt', 'a') as results_file:
         for word in words:
